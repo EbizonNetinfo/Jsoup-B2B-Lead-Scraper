@@ -88,6 +88,7 @@ public class TweenTribneEmailScrapper extends JFrame {
     public JLabel all_contact_record[][] = new JLabel[50][6];
     public JLabel all_email_record[][] = new JLabel[50][6];
     public JLabel all_phone_record[][] = new JLabel[50][6];
+    public JLabel all_des_record[][] = new JLabel[50][6];
     public TweenTribneEmailScrapper() {
         super();
         create();
@@ -849,13 +850,18 @@ public class TweenTribneEmailScrapper extends JFrame {
                         alexa_name_heading_1.setText("Name");
                         exportall_panel.add(alexa_name_heading_1);
                         
+                        JLabel alexa_des_heading_1 = new JLabel();
+                        alexa_des_heading_1.setBounds(500, 80, 200, 30);
+                        alexa_des_heading_1.setText("Designation");
+                        exportall_panel.add(alexa_des_heading_1);
+                        
                         alexa_email_heading_1 = new JLabel();
-                        alexa_email_heading_1.setBounds(570, 80, 200, 30);
+                        alexa_email_heading_1.setBounds(700, 80, 200, 30);
                         alexa_email_heading_1.setText("Email");
                         exportall_panel.add(alexa_email_heading_1);
                         
                         alexa_phone_heading_1 = new JLabel();
-                        alexa_phone_heading_1.setBounds(800, 80, 200, 30);
+                        alexa_phone_heading_1.setBounds(900, 80, 200, 30);
                         alexa_phone_heading_1.setText("Contact");
                         exportall_panel.add(alexa_phone_heading_1);
 
@@ -870,7 +876,7 @@ public class TweenTribneEmailScrapper extends JFrame {
                         alexa_email_heading_1.setFont(f_alexa4);
                         Font f_alexa5 = new Font(alexa_phone_heading_1.getFont().getName(), Font.BOLD, 15);
                         alexa_phone_heading_1.setFont(f_alexa5);
-
+                        alexa_des_heading_1.setFont(f_alexa5);
                         //Create the object of alexa_export_btn_1.
                         alexa_export_btn_1.setBounds(530, 50, 130, 20);
                         alexa_export_btn_1.setText("Export");
@@ -949,6 +955,7 @@ public class TweenTribneEmailScrapper extends JFrame {
                                             int contact_info = 0;
                                             String store_email = "";
                                             String store_contact = "";
+                                            String str4="Not Found";
                                             for (Element emaildoc_mail_all_1 : emaildoc_mail_all){
                                                 String emaildoc_mail_all_body = emaildoc_mail_all_1.text();
                                                 if (emaildoc_mail_all_body.contains("@" + ourSite)){
@@ -967,9 +974,17 @@ public class TweenTribneEmailScrapper extends JFrame {
                                                 }
                                                 //Code to end find contact detail.
                                                 String[] splits_contact_body_all = emaildoc_mail_all_body.split(" ");
+                                                 //str4="Not Found";
                                                     int temp_contact = splits_contact_body_all.length;
                                                     for (int inc = 0; inc < temp_contact; inc++){
                                                             String all_phone = splits_contact_body_all[inc];
+                                                            //Finding Designation
+                                                             //str4="Not Found";
+                                                            if(all_phone.equalsIgnoreCase("ceo")||all_phone.equalsIgnoreCase("ceo/founder")||all_phone.equalsIgnoreCase("founder")||all_phone.equalsIgnoreCase("co-founder")||all_phone.equalsIgnoreCase("director")||all_phone.equalsIgnoreCase("partner")||all_phone.equalsIgnoreCase("owner")||all_phone.equalsIgnoreCase("vp")||all_phone.equalsIgnoreCase("cordinator"))
+                                                            {
+                                                               str4=all_phone;
+                                                            }
+                                                            //Finding contact number
                                                             if(all_phone.length() > 9 && all_phone.length() < 15){
                                                                 int check=1;
                                                                 for(int j=0;j<all_phone.length();j++)
@@ -1017,17 +1032,23 @@ public class TweenTribneEmailScrapper extends JFrame {
                                             //Create the object of email.
                                             all_email_record[lineNumber][contact_serial] = new JLabel();
                                             all_email_record[lineNumber][contact_serial].setText(store_email);
-                                            all_email_record[lineNumber][contact_serial].setBounds(570, (100 * lineNumber) + (contact_serial * 18), 220, 30);
+                                            all_email_record[lineNumber][contact_serial].setBounds(700, (100 * lineNumber) + (contact_serial * 18), 220, 30);
                                             exportall_panel.add(all_email_record[lineNumber][contact_serial]);
                                             //Create the object of email end.
                                             
                                             //Create the object of email.
                                             all_phone_record[lineNumber][contact_serial] = new JLabel();
                                             all_phone_record[lineNumber][contact_serial].setText(store_contact);
-                                            all_phone_record[lineNumber][contact_serial].setBounds(800, (100 * lineNumber) + (contact_serial * 18), 200, 30);
+                                            all_phone_record[lineNumber][contact_serial].setBounds(900, (100 * lineNumber) + (contact_serial * 18), 200, 30);
                                             exportall_panel.add(all_phone_record[lineNumber][contact_serial]);
                                             //Create the object of email end.
+                                            //designation
 
+                                            all_des_record[lineNumber][contact_serial] = new JLabel();
+                                            all_des_record[lineNumber][contact_serial].setText(str4);
+                                            all_des_record[lineNumber][contact_serial].setBounds(500, (100 * lineNumber) + (contact_serial * 18), 200, 30);
+                                            exportall_panel.add(all_des_record[lineNumber][contact_serial]);
+                                            
                                             if (contact_serial == 5) {
                                                 contact_serial = 0;
                                             }
@@ -1078,9 +1099,11 @@ public class TweenTribneEmailScrapper extends JFrame {
                     }
                     Sheet sheet1 = wb1.createSheet("Site Alexa ranking");
                     int alexa_c = 1;
-                    sheet1.setDefaultColumnWidth(25);
+                    sheet1.setDefaultColumnWidth(20);
+                    sheet1.setHorizontallyCenter(true);
+                    sheet1.setVerticallyCenter(true);
                     Row row[] = new Row[alexa_csv_count_row_1 + 1];
-                    Cell cell[][] = new Cell[alexa_csv_count_row_1 + 1][5];
+                    Cell cell[][] = new Cell[alexa_csv_count_row_1 + 1][6];
                     //Cell cell;
                     row[0] = sheet1.createRow((short) 0);
                     cell[0][0] = row[0].createCell(0);
@@ -1090,8 +1113,10 @@ public class TweenTribneEmailScrapper extends JFrame {
                     cell[0][2] = row[0].createCell(2);
                     cell[0][2].setCellValue("Names");
                     cell[0][3] = row[0].createCell(3);
-                    cell[0][3].setCellValue("Email");
+                    cell[0][3].setCellValue("Designation");
                     cell[0][4] = row[0].createCell(4);
+                    cell[0][4].setCellValue("E-Mail");
+                    cell[0][4] = row[0].createCell(5);
                     cell[0][4].setCellValue("Contact");
                     for (int alexa_counter = 0; alexa_counter < alexa_csv_count_row_1; alexa_counter++) {
                         try {
@@ -1100,10 +1125,11 @@ public class TweenTribneEmailScrapper extends JFrame {
                             cell[alexa_c][0].setCellValue(alexa_site_url_1[alexa_counter].getText());
                             cell[alexa_c][1] = row[alexa_c].createCell(1);
                             cell[alexa_c][1].setCellValue(alexa_site_rank_1[alexa_counter].getText());
-                            String mystr, mystr_email, mystr_phone;
+                            String mystr, mystr_email, mystr_phone,designation;
                             mystr = "";
                             mystr_email = "";
                             mystr_phone = "";
+                            designation="";
                             int contact_serial = 0;
                             System.out.println("Check :" + all_contact_record[1][1].getText());
                             for (int i = 0; i <= 5; i++) {
@@ -1111,10 +1137,12 @@ public class TweenTribneEmailScrapper extends JFrame {
                                     mystr = mystr + all_contact_record[alexa_counter + 1][i].getText();
                                     mystr_email = mystr_email + all_email_record[alexa_counter + 1][i].getText();
                                     mystr_phone = mystr_phone + all_phone_record[alexa_counter + 1][i].getText();
+                                   designation=designation+all_des_record[alexa_counter + 1][i].getText();
                                     if (i != 5) {
                                         mystr += "\n";
                                         mystr_email += "\n";
                                         mystr_phone += "\n";
+                                        designation+="\n";
                                     }
                                 } catch (Exception e) {
                                 }
@@ -1123,10 +1151,13 @@ public class TweenTribneEmailScrapper extends JFrame {
                             cell[alexa_c][2] = row[alexa_c].createCell(2);
                             cell[alexa_c][2].setCellValue(mystr);
                             
-                            cell[alexa_c][3] = row[alexa_c].createCell(3);
+                            cell[alexa_c][2] = row[alexa_c].createCell(3);
+                            cell[alexa_c][2].setCellValue(designation);
+                            
+                            cell[alexa_c][3] = row[alexa_c].createCell(4);
                             cell[alexa_c][3].setCellValue(mystr_email);
                             
-                            cell[alexa_c][4] = row[alexa_c].createCell(4);
+                            cell[alexa_c][4] = row[alexa_c].createCell(5);
                             cell[alexa_c][4].setCellValue(mystr_phone);
                             
                             System.out.println("Excel :" + mystr_phone);
@@ -1165,8 +1196,8 @@ public class TweenTribneEmailScrapper extends JFrame {
         exportall_frame.add(exportall_panel);
         exportall_frame.setVisible(true);
         exportall_frame.setTitle("Ebizon e-mail Scrapper Tool for search email contact and alexa rank.");
-        exportall_frame.setLocation(new Point(130, 30));
-        exportall_frame.setSize(new Dimension(1024, 700));
+        exportall_frame.setLocation(new Point(70, 30));
+        exportall_frame.setSize(new Dimension(1124, 700));
         exportall_frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
